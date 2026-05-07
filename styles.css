@@ -270,7 +270,7 @@ a { color: inherit; text-decoration: none; }
 
 .project-name {
   font-family: var(--font-head);
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   color: var(--heading);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -385,6 +385,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* calendar */
+.calendar-widget { margin-bottom: 2.5rem; }
 .appointment-list { list-style: none; display: flex; flex-direction: column; }
 
 .appointment-item {

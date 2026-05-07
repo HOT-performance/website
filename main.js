@@ -157,6 +157,50 @@ function renderProjects(data) {
         const timeStr = (timeVal && timeVal !== 'NA') ? `🕒 ${timeVal} &nbsp;•&nbsp; ` : '';
         const locStr = a.Location ? `📍 ${a.Location}` : '';
         
+        let calUrl = '#';
+        let title = a['Meeting Name'] || 'Appointment';
+        let textDetails = a.Description || '';
+        let location = a.Location || '';
+        
+        // Basic Google Calendar Template
+        calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(textDetails)}&location=${encodeURIComponent(location)}`;
+        
+        // Try parsing dates for calendar (YYYYMMDDTHHmmss)
+        if (a.Date && String(a.Date).includes('.')) {
+          let dp = String(a.Date).trim().split('.');
+          if (dp.length >= 2) {
+             let y = dp[2] ? dp[2].trim() : '26'; // Default to 2026 based on sheet
+             if (y.length === 2) y = '20' + y;
+             let m = dp[1].padStart(2, '0');
+             let d = dp[0].padStart(2, '0');
+             let baseDate = `${y}${m}${d}`;
+             
+             let startT = '000000';
+             let endT = '000000';
+             let isAllDay = true;
+             
+             if (timeVal && timeVal !== 'NA') {
+               let times = String(timeVal).match(/(\d{1,2})[^\d](\d{2})/g);
+               if (times && times.length > 0) {
+                 isAllDay = false;
+                 startT = times[0].replace(/[^\d]/g, '').padStart(4, '0') + '00';
+                 if (times.length > 1) {
+                   endT = times[1].replace(/[^\d]/g, '').padStart(4, '0') + '00';
+                 } else {
+                   let startH = parseInt(startT.substring(0,2));
+                   endT = String(startH + 1).padStart(2, '0') + startT.substring(2);
+                 }
+               }
+             }
+             
+             if (isAllDay) {
+               calUrl += `&dates=${baseDate}/${baseDate}`;
+             } else {
+               calUrl += `&dates=${baseDate}T${startT}/${baseDate}T${endT}`;
+             }
+          }
+        }
+        
         return `
             <li class="appointment-item">
               <div class="appointment-date">
@@ -164,11 +208,11 @@ function renderProjects(data) {
                 <span class="appt-month">${month}</span>
               </div>
               <div class="appointment-info">
-                <p class="appt-name">${a['Meeting Name'] || 'Appointment'}</p>
+                <p class="appt-name">${title}</p>
                 <p class="appt-location">${timeStr}${locStr}</p>
                 <p class="appt-desc">${a.Description || ''}</p>
               </div>
-              <a href="#" class="add-to-cal" aria-label="Add to Calendar">+ Add to Calendar</a>
+              <a href="${calUrl}" target="_blank" class="add-to-cal" aria-label="Add to Calendar">+ Add to Calendar</a>
             </li>
         `;
       }).join('');
@@ -183,7 +227,7 @@ function renderProjects(data) {
       `;
     }
 
-    article.innerHTML = headerHtml + tasksHtml + artistsHtml + apptsHtml;
+    article.innerHTML = headerHtml + apptsHtml + tasksHtml + artistsHtml;
     container.appendChild(article);
     
     // Add rune separator if not the last item
