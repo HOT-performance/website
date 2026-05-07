@@ -45,7 +45,10 @@ function renderProjects(data) {
     let headerHtml = `
       <header class="project-header">
         <div class="project-meta-line">
-          <span class="project-date-range">${proj['Main run time (dd.mm.yy. - dd.mm.yy.)'] || 'TBD'}</span>
+          <span class="project-date-range">${(() => {
+            const runTimeKey = Object.keys(proj).find(k => k.toLowerCase().includes('run time'));
+            return (runTimeKey && proj[runTimeKey] && proj[runTimeKey] !== 'NA') ? proj[runTimeKey] : 'TBD';
+          })()}</span>
           <span class="project-rune" aria-hidden="true">${runes[index % runes.length]}</span>
         </div>
         <h3 class="project-name">${projectNameHtml}</h3>
@@ -132,18 +135,26 @@ function renderProjects(data) {
         let month = "MMM";
         
         if (a.Date) {
-           try {
-             const d = new Date(a.Date);
-             if (!isNaN(d.getTime())) {
-                day = d.getDate().toString().padStart(2, '0');
-                month = d.toLocaleString('en-US', { month: 'short' }).toUpperCase();
-             } else {
-                day = a.Date.toString().substring(0, 2);
+           let dateStr = String(a.Date).trim();
+           // Check if it matches dd.mm.yy format
+           const parts = dateStr.split('.');
+           if (parts.length >= 2) {
+             day = parts[0].padStart(2, '0');
+             const m = parseInt(parts[1], 10);
+             const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+             if (m >= 1 && m <= 12) {
+               month = months[m - 1];
              }
-           } catch(e) {}
+           } else {
+             // Fallback
+             day = dateStr.substring(0, 2);
+           }
         }
         
-        const timeStr = (a.Time && a.Time !== 'NA') ? `🕒 ${a.Time} &nbsp;•&nbsp; ` : '';
+        // Also check if time column has a different header (like Time (military...))
+        const timeKey = Object.keys(a).find(k => k.toLowerCase().includes('time'));
+        const timeVal = timeKey ? a[timeKey] : a.Time;
+        const timeStr = (timeVal && timeVal !== 'NA') ? `🕒 ${timeVal} &nbsp;•&nbsp; ` : '';
         const locStr = a.Location ? `📍 ${a.Location}` : '';
         
         return `
@@ -153,7 +164,7 @@ function renderProjects(data) {
                 <span class="appt-month">${month}</span>
               </div>
               <div class="appointment-info">
-                <p class="appt-name">${a.Name || 'Appointment'}</p>
+                <p class="appt-name">${a['Meeting Name'] || 'Appointment'}</p>
                 <p class="appt-location">${timeStr}${locStr}</p>
                 <p class="appt-desc">${a.Description || ''}</p>
               </div>
