@@ -1,0 +1,508 @@
+/* H.O.T-Performance — Internal Website */
+
+:root {
+  --bg:          #0d0c0a;
+  --surface:     #111009;
+  --border:      rgba(239, 224, 180, 0.09);
+  --heading:     #EFE0B4;
+  --body:        #FFF9E6;
+  --muted:       rgba(255, 249, 230, 0.42);
+  --accent:      #EFE0B4;
+  --accent-dim:  rgba(239, 224, 180, 0.05);
+  --font-head:   'Aboreto', serif;
+  --font-body:   'Inter', sans-serif;
+  --max-width:   860px;
+  --px:          clamp(1.25rem, 5vw, 3rem);
+  --section-gap: 5rem;
+  --radius:      2px;
+  --transition:  0.25s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background-color: var(--bg);
+  color: var(--body);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* ── Grain / paper noise overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--px);
+}
+
+.section { padding-block: var(--section-gap); }
+
+.section-heading {
+  font-family: var(--font-head);
+  font-size: clamp(0.9rem, 2.5vw, 1.25rem);
+  color: var(--heading);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.divider {
+  width: 3rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(239,224,180,0.4), transparent);
+  margin-inline: auto;
+  margin-bottom: 2.5rem;
+}
+
+/* ══ RUNE BANDS ══ */
+.rune-band {
+  overflow: hidden;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+
+.rune-row {
+  display: block;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: rgba(239, 224, 180, 0.18);
+  text-align: center;
+  animation: rune-scroll 40s linear infinite;
+}
+
+@keyframes rune-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.rune-band--footer { margin-bottom: 0; }
+
+/* ══ SECTION SEPARATOR (glyph) ══ */
+.section-sep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 0;
+  color: rgba(239, 224, 180, 0.25);
+}
+
+.sep-glyph {
+  width: 44px;
+  height: 44px;
+  color: rgba(239, 224, 180, 0.22);
+  animation: sigil-float 10s ease-in-out infinite;
+}
+
+@keyframes sigil-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-5px) rotate(180deg); }
+}
+
+.sep-line {
+  width: 1px;
+  height: 2rem;
+  background: linear-gradient(to bottom, rgba(239,224,180,0.2), transparent);
+}
+
+/* ══ HEADER ══ */
+.site-header {
+  padding-block: 4rem 3rem;
+  text-align: center;
+}
+
+.logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.site-logo {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  animation: logo-pulse 8s ease-in-out infinite;
+  filter: drop-shadow(0 0 22px rgba(239, 224, 180, 0.15));
+}
+
+@keyframes logo-pulse {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%       { transform: translateY(-8px); opacity: 1; }
+}
+
+.site-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.3rem, 5vw, 2.6rem);
+  color: var(--heading);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.internal-notice {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.25rem 0.75rem;
+  margin-top: 0.25rem;
+  border: 1px solid var(--border);
+  opacity: 0.9;
+}
+
+/* ══ ABOUT ══ */
+.about-section { text-align: center; }
+
+.body-text {
+  color: var(--body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.9;
+  max-width: 66ch;
+  margin-inline: auto;
+  opacity: 0.7;
+}
+
+/* ── Social Icons ── */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  transition: transform var(--transition), opacity var(--transition);
+  opacity: 0.65;
+}
+
+.social-link:hover { opacity: 1; transform: translateY(-3px); }
+
+.icon-mask {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background-color: var(--heading);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.whatsapp-icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z'/%3E%3C/svg%3E");
+}
+
+.instagram-icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'/%3E%3C/svg%3E");
+}
+
+.telegram-icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.484c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.39 14.065l-2.95-.924c-.64-.203-.653-.64.136-.948l11.527-4.443c.537-.194 1.006.131.459.498z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.484c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.39 14.065l-2.95-.924c-.64-.203-.653-.64.136-.948l11.527-4.443c.537-.194 1.006.131.459.498z'/%3E%3C/svg%3E");
+}
+
+/* ══ PROJECTS ══ */
+.projects-section { background: var(--surface); }
+
+.project-card {
+  background: var(--bg);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.project-card:last-child { margin-bottom: 0; }
+.project-header { margin-bottom: 2rem; }
+
+.project-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.project-date-range {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.project-rune {
+  font-size: 1rem;
+  color: rgba(239, 224, 180, 0.3);
+}
+
+.project-name {
+  font-family: var(--font-head);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--heading);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.project-summary {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.75;
+  max-width: 60ch;
+}
+
+/* task board */
+.task-board { margin-bottom: 2.5rem; }
+
+.board-title {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--heading);
+  opacity: 0.85;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+
+.board-title::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+}
+
+.task-board[open] .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.task-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+
+.task-table th,
+.task-table td {
+  padding: 0.6rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-table th {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.task-table td { color: var(--body); font-weight: 300; }
+.task-table tbody tr:hover { background: var(--accent-dim); }
+
+/* artists list */
+.artists-list {
+  list-style: none;
+  font-size: 0.86rem;
+  color: var(--body);
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.artists-list li {
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.artists-list li:hover { background: var(--accent-dim); }
+
+.artists-list span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* badges — borderless for minimalism */
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.63rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.badge--pending    { color: rgba(239, 224, 180, 0.6); }
+.badge--inprogress { color: #c4b5fd; }
+.badge--done       { color: #86efac; }
+
+/* card rune separator */
+.card-rune-sep {
+  text-align: center;
+  font-size: 1.1rem;
+  letter-spacing: 0.8em;
+  color: rgba(239, 224, 180, 0.2);
+  margin: 2rem 0;
+}
+
+/* calendar */
+.appointment-list { list-style: none; display: flex; flex-direction: column; }
+
+.appointment-item {
+  display: grid;
+  grid-template-columns: 4rem 1fr auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.appointment-item:hover { background: var(--accent-dim); }
+
+.appointment-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.appt-day {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  color: var(--heading);
+  line-height: 1;
+}
+
+.appt-month {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+.appt-name { font-weight: 500; font-size: 0.9rem; color: var(--heading); margin-bottom: 0.2rem; }
+.appt-location { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem; }
+.appt-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; font-weight: 300; }
+
+.add-to-cal {
+  white-space: nowrap;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.75rem;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.add-to-cal:hover { color: var(--heading); border-color: rgba(239,224,180,0.3); }
+
+/* ══ FOOTER / IMPRESSUM ══ */
+.site-footer {
+  padding-block: 3.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.impressum-heading { text-align: left; }
+
+.impressum-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: rgba(255, 249, 230, 0.32);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.impressum-block strong { color: rgba(255, 249, 230, 0.45); font-weight: 500; }
+
+.impressum-sub {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(239, 224, 180, 0.35);
+  margin-top: 0.5rem;
+}
+
+.impressum-link {
+  color: rgba(239, 224, 180, 0.38);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity var(--transition);
+}
+
+.impressum-link:hover { opacity: 0.7; }
+
+.footer-copy {
+  font-size: 0.65rem;
+  color: rgba(255, 249, 230, 0.2);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 600px) {
+  :root { --section-gap: 3.5rem; }
+
+  .appointment-item {
+    grid-template-columns: 3.5rem 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .add-to-cal {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  .task-table th:last-child,
+  .task-table td:last-child { display: none; }
+}
