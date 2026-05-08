@@ -6,7 +6,7 @@
   --border:      rgba(239, 224, 180, 0.09);
   --heading:     #EFE0B4;
   --body:        #FFF9E6;
-  --muted:       rgba(255, 249, 230, 0.42);
+  --muted:       rgba(255, 249, 230, 0.52);
   --accent:      #EFE0B4;
   --accent-dim:  rgba(239, 224, 180, 0.05);
   --font-head:   'Aboreto', serif;
@@ -26,7 +26,7 @@ body {
   color: var(--body);
   font-family: var(--font-body);
   font-weight: 300;
-  line-height: 1.75;
+  line-height: 1.85;
   -webkit-font-smoothing: antialiased;
   position: relative;
 }
@@ -180,12 +180,12 @@ a { color: inherit; text-decoration: none; }
 
 .body-text {
   color: var(--body);
-  font-size: 0.95rem;
+  font-size: 0.97rem;
   font-weight: 300;
-  line-height: 1.9;
-  max-width: 66ch;
+  line-height: 2;
+  max-width: 68ch;
   margin-inline: auto;
-  opacity: 0.7;
+  opacity: 0.82;
 }
 
 /* ── Social Icons ── */
@@ -318,47 +318,56 @@ a { color: inherit; text-decoration: none; }
   transform: rotate(180deg);
 }
 
-.task-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.task-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 
 .task-table th,
 .task-table td {
-  padding: 0.6rem 0.5rem;
+  padding: 0.65rem 0.6rem;
   text-align: left;
   border-bottom: 1px solid var(--border);
+  vertical-align: top;
 }
 
 .task-table th {
-  font-size: 0.65rem;
+  font-size: 0.63rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 400;
+  white-space: nowrap;
 }
 
-.task-table td { color: var(--body); font-weight: 300; }
+.task-table td { color: var(--body); font-weight: 300; line-height: 1.6; }
 .task-table tbody tr:hover { background: var(--accent-dim); }
+
+/* assigned-to: shrinks on small screens instead of disappearing */
+.task-table .col-assigned { width: 6rem; }
+@media (max-width: 400px) {
+  .task-table .col-assigned { width: 5rem; font-size: 0.78rem; }
+}
 
 /* artists list */
 .artists-list {
   list-style: none;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   color: var(--body);
   font-weight: 300;
   margin-bottom: 1rem;
 }
 
 .artists-list li {
-  padding: 0.6rem 0.5rem;
+  padding: 0.65rem 0.6rem;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
+  line-height: 1.6;
 }
 
 .artists-list li:hover { background: var(--accent-dim); }
 
 .artists-list span {
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: 0.77rem;
 }
 
 /* badges — borderless for minimalism */
@@ -423,9 +432,9 @@ a { color: inherit; text-decoration: none; }
   margin-top: 0.2rem;
 }
 
-.appt-name { font-weight: 500; font-size: 0.9rem; color: var(--heading); margin-bottom: 0.2rem; }
-.appt-location { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem; }
-.appt-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; font-weight: 300; }
+.appt-name { font-weight: 500; font-size: 0.97rem; color: var(--heading); margin-bottom: 0.35rem; }
+.appt-location { font-size: 0.84rem; color: rgba(255, 249, 230, 0.72); margin-bottom: 0.35rem; }
+.appt-desc { font-size: 0.9rem; color: rgba(255, 249, 230, 0.68); line-height: 1.65; font-weight: 300; }
 
 .add-to-cal {
   white-space: nowrap;
@@ -489,6 +498,35 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
 }
 
+/* ══ FUNDING TABLE ══ */
+.funding-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+
+.funding-table th,
+.funding-table td {
+  padding: 0.65rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.funding-table th {
+  font-size: 0.63rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.funding-table td { color: var(--body); font-weight: 300; }
+.funding-table tbody tr:hover { background: var(--accent-dim); }
+
+/* status colours reused from badges */
+.funding-status--applied    { color: #86efac; }
+.funding-status--dialogue   { color: #c4b5fd; }
+.funding-status--denied     { color: rgba(239,224,180,0.45); text-decoration: line-through; }
+
 /* ══ RESPONSIVE ══ */
 @media (max-width: 600px) {
   :root { --section-gap: 3.5rem; }
@@ -504,6 +542,11 @@ a { color: inherit; text-decoration: none; }
     margin-top: 0.5rem;
   }
 
-  .task-table th:last-child,
-  .task-table td:last-child { display: none; }
+  /* Task table: keep Assigned To visible, allow wrapping */
+  .task-table th,
+  .task-table td { font-size: 0.8rem; padding: 0.5rem 0.35rem; }
+
+  /* Funding table: hide Via and Date on mobile */
+  .funding-table .col-via,
+  .funding-table .col-date { display: none; }
 }
