@@ -261,7 +261,8 @@ function renderProjects(data) {
       const fundingRows = projFunding.map(f => {
         const status = (f.Status || '').trim();
         let statusClass = '';
-        if (status.toLowerCase().includes('dialogue')) statusClass = 'funding-status--dialogue';
+        if (status.toLowerCase().includes('approved')) statusClass = 'funding-status--approved';
+        else if (status.toLowerCase().includes('dialogue')) statusClass = 'funding-status--dialogue';
         else if (status.toLowerCase().includes('applied')) statusClass = 'funding-status--applied';
         else if (status.toLowerCase().includes('denied')) statusClass = 'funding-status--denied';
 
@@ -309,7 +310,53 @@ function renderProjects(data) {
       `;
     }
 
-    article.innerHTML = headerHtml + apptsHtml + tasksHtml + artistsHtml + fundingHtml;
+    // Concept (Dropdown, collapsed by default — shown FIRST before all other sections)
+    const conceptPdfName = `Concept_${proj.Name}.pdf`;
+    const conceptPdfPath = `./${encodeURIComponent(conceptPdfName)}`;
+    const conceptHtml = `
+      <details class="task-board">
+        <summary class="board-title">
+          Concept
+          <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </summary>
+        <div class="room-plan-wrap">
+          <iframe
+            src="${conceptPdfPath}"
+            class="room-plan-frame"
+            title="Concept for ${proj.Name}"
+            loading="lazy"
+          >
+            <p style="color: var(--muted); padding: 1rem; font-size: 0.85rem;">PDF preview not available in your browser. <a href="${conceptPdfPath}" target="_blank" style="color: var(--heading); text-decoration: underline;">Download PDF</a></p>
+          </iframe>
+          <a href="${conceptPdfPath}" target="_blank" class="pdf-download-link">↓ Open / Download PDF</a>
+        </div>
+      </details>
+    `;
+
+    // Room Plan (Dropdown, collapsed by default)
+    const pdfName = `Rooms_${proj.Name}.pdf`;
+    const pdfPath = `./${encodeURIComponent(pdfName)}`;
+    const roomPlanHtml = `
+      <details class="task-board">
+        <summary class="board-title">
+          Room Plan
+          <svg class="dropdown-arrow" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </summary>
+        <div class="room-plan-wrap">
+          <iframe
+            src="${pdfPath}"
+            class="room-plan-frame"
+            title="Room Plan for ${proj.Name}"
+            loading="lazy"
+          >
+            <p style="color: var(--muted); padding: 1rem; font-size: 0.85rem;">PDF preview not available in your browser. <a href="${pdfPath}" target="_blank" style="color: var(--heading); text-decoration: underline;">Download PDF</a></p>
+          </iframe>
+          <a href="${pdfPath}" target="_blank" class="pdf-download-link">↓ Open / Download PDF</a>
+        </div>
+      </details>
+    `;
+
+    article.innerHTML = headerHtml + conceptHtml + apptsHtml + tasksHtml + artistsHtml + fundingHtml + roomPlanHtml;
     container.appendChild(article);
     
     // Add rune separator if not the last item
