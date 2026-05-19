@@ -552,12 +552,12 @@ a { color: inherit; text-decoration: none; }
   margin-top: 0.5rem;
 }
 
-.room-plan-frame {
+.pdf-canvas-container {
   width: 100%;
-  height: 520px;
-  border: 1px solid var(--border);
+  min-height: 200px;
   background: var(--surface);
-  display: block;
+  border: 1px solid var(--border);
+  overflow: hidden;
 }
 
 .pdf-download-link {
